@@ -7,6 +7,7 @@
 
 
 (defn base64-extract
+  "Fetches a B64 string from a file."
   [path]
   (reduce
    str ""
@@ -16,11 +17,16 @@
     (line-seq (io/reader path)))))
 
 
+(defn byte->int
+  "Turns a signed byte (-128..127) to its normalized integer version (0..255)."
+  [^Byte byte]
+  (bit-and byte 0xff))
+
 (defn base64-bytes
+  "Turns a B64 string into a lazy seq of integers."
   [^String base64string]
   (map
-   (fn [^Byte byte]
-     (bit-and byte 0xff))
+   byte->int
    (seq
     (.decode (Base64/getDecoder)
              (.getBytes base64string)))))
@@ -31,6 +37,7 @@
   (format "%02X" number))
 
 (defn bytes->hex
+  "Renders a seq of integers as a hex string."
   [bytes]
   (apply str (map byte->hex bytes)))
 
@@ -41,27 +48,34 @@
 
 
 (defn bytes->binary
+  "Renders a seq of integers as a binary string (8 bits per integer)."
   [bytes]
   (apply str (map byte->binary bytes)))
 
 
 (defn bytes->int
+  "Restores a BigInteger from a seq of bytes."
   [bytes]
   (BigInteger.
    ^String
    (bytes->hex bytes)
    16))
 
+
+;;
+;; Turns a pair of tag and its content into Clojure data.
+;; Extended below.
+;;
+(defmulti parse-clj
+  (fn [tag content]
+    tag))
+
+
 (defn parse-content
   [len bytes]
   (let [[content bytes]
         (split-at len bytes)]
     [content bytes]))
-
-
-(defmulti parse-clj
-  (fn [tag content]
-    tag))
 
 
 (defn head-tail
@@ -75,6 +89,7 @@
 
 
 (defn parse-len
+  "Splits a seq of bytes on length and the rest of it."
   [bytes]
   (let [[len bytes] (head-tail bytes)
         short? (< len 128)]
@@ -89,6 +104,7 @@
 
 
 (defn parse-iter
+  "Parses a single ASN.1 entity."
   [bytes]
 
   (let [[tag bytes] (parse-tag bytes)
@@ -99,6 +115,7 @@
 
 
 (defn parse-loop
+  "Parses all the ASN.1 entities. Returns a vector of them."
 
   ([bytes]
    (parse-loop bytes []))
@@ -128,7 +145,7 @@
 
 
 ;;
-;; Treat A0 and A1 as sequences, but it's not for sure
+;; Treat A0 and A1 as sequences, but it's not for sure.
 ;;
 (defmethod parse-clj 0xa0
   [_ content]
@@ -158,6 +175,11 @@
   {:tag :bit-string
    :attr {}
    :content (bytes->binary content)})
+
+
+;;
+;; Main
+;;
 
 
 (defn -main [& args]
