@@ -5,6 +5,9 @@ since due to `java.util.Base64` usage.
 Every tag has its own multimethod implementation so the parser might be extended
 with ease.
 
+The Clojure structures follow the XML-friendly to make it easier to dump the
+content into an XML file.
+
 ## Parsing an RSA key:
 
 ```bash

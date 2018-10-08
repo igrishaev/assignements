@@ -1,36 +1,14 @@
-# exoscale
 
-FIXME: description
+A simple REST server. It uses an atom to store the data in memory, although
+SQLite/Datomic options would work.
 
-## Installation
+Some of its endpoints are protected with `clojure.spec` to prevent incorrect
+input.
 
-Download from http://example.com/FIXME.
+Usage:
 
-## Usage
+```bash
+lein run
+```
 
-FIXME: explanation
-
-    $ java -jar exoscale-0.1.0-standalone.jar [args]
-
-## Options
-
-FIXME: listing of options this app accepts.
-
-## Examples
-
-...
-
-### Bugs
-
-...
-
-### Any Other Sections
-### That You Think
-### Might be Useful
-
-## License
-
-Copyright © 2018 FIXME
-
-Distributed under the Eclipse Public License either version 1.0 or (at
-your option) any later version.
+Then point your browser to [localhost:8080](http://localhost:8080).
