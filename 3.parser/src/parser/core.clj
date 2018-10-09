@@ -73,8 +73,7 @@
 
 (defn parse-content
   [len bytes]
-  (let [[content bytes]
-        (split-at len bytes)]
+  (let [[content bytes] (split-at len bytes)]
     [content bytes]))
 
 
@@ -98,8 +97,7 @@
       [len bytes]
 
       (let [len (- len 128)
-            [len-bytes bytes]
-            (split-at len bytes)]
+            [len-bytes bytes] (split-at len bytes)]
         [(bytes->int len-bytes) bytes]))))
 
 
