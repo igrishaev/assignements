@@ -1,12 +1,18 @@
 
-A simple ASN.1 parser without any third party dependencies. Requires Java 8
-since due to `java.util.Base64` usage.
+A simple ASN.1 parser without any third-party dependencies. Requires Java 8 or
+above due to `java.util.Base64` usage.
 
 Every tag has its own multimethod implementation so the parser might be extended
-with ease.
+with ease. The tags which are not implemented (e.g. `Object`) just show their
+content as is.
 
-The Clojure structures follow the XML-friendly formation to make it easier to
-dump the content into an XML file.
+The parser takes a base64-encoded content from a file and turns it into a lazy
+sequence of 0..255 integers. Every parsing operation takes a chunk of it
+reducing the rest part. It continues until the rest part becomes empty.
+
+The result is a Clojure XML-like structure with each node consists from `:tag`,
+`:attr` and `:content` keys. This is helpful when dumping the result into XML or
+traversing it with zippers.
 
 ## Parsing an RSA key
 

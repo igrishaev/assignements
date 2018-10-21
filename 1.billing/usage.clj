@@ -22,7 +22,7 @@
 
 
 (defn date-diff
-  "Returns a different b/w two dates in minutes."
+  "Returns a difference b/w two dates in minutes."
   [^Date date1 ^Date date2]
   (quot
    (abs

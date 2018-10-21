@@ -28,6 +28,7 @@
 
     (DELETE "/" request (handlers/delete-job request))))
 
+  ;; Everything else goes to 404 Not Found handler
   handlers/not-found)
 
 

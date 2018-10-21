@@ -31,6 +31,8 @@
 
 
 (defn start
+  "An empty event that does nothing for atom storage.
+  For SQLite/Datomic, it might initiate the connection."
   [])
 
 (defn stop

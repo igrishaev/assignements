@@ -1,6 +1,6 @@
 
 A simple REST server. It uses an atom to store the data in memory, although
-SQLite/Datomic options would work.
+SQLite/Datomic in-memory backends would also work.
 
 Some of its endpoints are protected with `clojure.spec` to prevent incorrect
 input.
